@@ -84,18 +84,40 @@ class MailchimpWrapper extends Newsletter {
     );
     return response;
   }
-  
+
   async getList(listId) {
-    const resp = await fetch(config.newsletterBase + "/lists/" + listId, {
+    const response = await fetch(config.newsletterBase + "/lists/" + listId, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Basic " + base64.encode("api:" + config.newsletterToken)
       }
     });
-    const json = await resp.json();
-    return json;
+    const responseJson = await response.json();
+    return responseJson;
+  } 
+}
+
+class MailtrainWrapper extends Newsletter {
+  async addSubscriber(listId, data) {
+    const response = await fetch(
+      this.config.newsletterBase + '/subscribe/'+ listId + "?access_token=" + this.config.newsletterToken,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          EMAIL: data.email,
+          FIRST_NAME: data.firstName,
+          LAST_NAME: data.lastName,
+          REQUIRE_CONFIRMATION: data.confirmation ? "yes" : undefined
+        })
+      }
+    );
+    const responseJson = await response.json();
+    return responseJson;
   }
-  
 }
 module.exports.MailchimpWrapper = MailchimpWrapper;
+module.exports.MailtrainWrapper = MailtrainWrapper
