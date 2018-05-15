@@ -84,6 +84,18 @@ class MailchimpWrapper extends Newsletter {
     );
     return response;
   }
+  
+  async getList(listId) {
+    const resp = await fetch(config.newsletterBase + "/lists/" + listId, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Basic " + base64.encode("api:" + config.newsletterToken)
+      }
+    });
+    const json = await resp.json();
+    return json;
+  }
+  
 }
-
 module.exports.MailchimpWrapper = MailchimpWrapper;
