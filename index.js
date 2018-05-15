@@ -118,6 +118,23 @@ class MailtrainWrapper extends Newsletter {
     const responseJson = await response.json();
     return responseJson;
   }
+
+  async removeSubscriber(listId, email) {
+    const response = await fetch(
+      this.config.newsletterBase + "/unsubscribe/" + listId + "?access_token=" + this.config.newsletterToken,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          EMAIL: email
+        })
+      }
+    );
+    const responseJson = await response.json();
+    return responseJson;
+  }
 }
 module.exports.MailchimpWrapper = MailchimpWrapper;
-module.exports.MailtrainWrapper = MailtrainWrapper
+module.exports.MailtrainWrapper = MailtrainWrapper;
