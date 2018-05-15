@@ -71,6 +71,19 @@ class MailchimpWrapper extends Newsletter {
     const responseJson = await response.json();
     return responseJson;
   }
+
+  async removeSubscriber(listId, email) {
+    const response = await fetch(
+      config.newsletterBase + "/lists/" + listId + "/members/" + Newsletter.getMD5(email),
+      {
+        method: "delete",
+        headers: {
+          Authorization: "Basic " + base64.encode("api:" + this.config.newsletterToken)
+        }
+      }
+    );
+    return response;
+  }
 }
 
 module.exports.MailchimpWrapper = MailchimpWrapper;
