@@ -102,8 +102,12 @@ class MailchimpWrapper extends Newsletter {
 
 class MailtrainWrapper extends Newsletter {
   async addSubscriber(listId, data) {
+    // get cid from list id 
+    const list = await this.getList(listId);
+    const cid = list.data.cid;
+
     const response = await fetch(
-      this.config.newsletterBase + '/subscribe/'+ listId + "?access_token=" + this.config.newsletterToken,
+      this.config.newsletterBase + '/subscribe/'+ cid + "?access_token=" + this.config.newsletterToken,
       {
         method: "POST",
         headers: {
@@ -122,8 +126,12 @@ class MailtrainWrapper extends Newsletter {
   }
 
   async removeSubscriber(listId, email) {
+    // get cid from list id 
+    const list = await this.getList(listId);
+    const cid = list.data.cid;
+
     const response = await fetch(
-      this.config.newsletterBase + "/unsubscribe/" + listId + "?access_token=" + this.config.newsletterToken,
+      this.config.newsletterBase + "/unsubscribe/" + cid + "?access_token=" + this.config.newsletterToken,
       {
         method: "POST",
         headers: {
