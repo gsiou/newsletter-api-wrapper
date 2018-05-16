@@ -14,6 +14,8 @@ class Newsletter {
 
   async getList(listId) {throw new Error('Not implemented');}
 
+  async getLists() {throw new Error('Not implemented');}
+
   static getMD5(email) {
     return crypto.createHash("md5").update(email).digest("hex");
   }
@@ -130,6 +132,34 @@ class MailtrainWrapper extends Newsletter {
         body: JSON.stringify({
           EMAIL: email
         })
+      }
+    );
+    const responseJson = await response.json();
+    return responseJson;
+  }
+
+  async getList(id) {
+    const response = await fetch(
+      this.config.newsletterBase + '/list/' +  id + "?access_token=" + this.config.newsletterToken,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    const responseJson = await response.json();
+    return responseJson;
+  }
+
+  async getLists() {
+    const response = await fetch(
+      this.config.newsletterBase + '/lists' + "?access_token=" + this.config.newsletterToken,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
     );
     const responseJson = await response.json();
